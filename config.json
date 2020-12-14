@@ -1,0 +1,49 @@
+{
+    "flavour": "Xubuntu",
+    "output_iso": "CustomBuntu.iso",
+    "output_volume" : "CustomBuntu",
+    "repositories": [
+        {
+            "name": "Slack",
+            "gpg_signature": "https://packagecloud.io/slacktechnologies/slack/gpgkey",
+            "url": "deb https://packagecloud.io/slacktechnologies/slack/debian/ jessie main",
+            "list_file": "slack.list"
+        },
+        {
+            "name": "Chrome",
+            "gpg_signature": "https://dl-ssl.google.com/linux/linux_signing_key.pub",
+            "url": "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main",
+            "list_file": "google-chrome.list"
+        }
+    ],
+    "packages": [
+        {
+            "name": "flameshot"
+        },
+        {
+            "name": "filezilla"
+        },
+        {
+            "name": "google-chrome-stable"
+        },
+        {
+            "name": "slack-desktop"
+        },
+        {
+            "name": "whois"
+        },
+        {
+            "name": "uuid"
+        },
+        {
+            "name": "git"
+        }
+    ],
+    "additional_files": [
+        {
+            "origin_path": "~/custom_iso/grub.cfg",
+            "target_path": "iso/boot/grub/",
+            "description": "Grub config file"
+        }
+    ]
+}
