@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# MY_PATH="`dirname \"$0\"`"              # relative
+SCRIPT_PATH="`( cd \"$SCRIPT_PATH\" && pwd )`"  # absolutized and normalized
+if [ -z "$SCRIPT_PATH" ] ; then
+  # error; for some reason, the path is not accessible
+  # to the script (e.g. permissions re-evaled after suid)
+  exit 1  # fail
+fi
+echo "Running script from $SCRIPT_PATH"
+
 # FLAVOUR=$(echo ${1} | tr '[:upper:]' '[:lower:]')
 CONFIG_FILE=${1}
 
@@ -41,10 +50,10 @@ fi
 
 # exit
 
-if [[ ! -d ~/livecd-${FLAVOUR} ]]; then
+if [[ ! -d $SCRIPT_PATH/livecd-${FLAVOUR} ]]; then
     echo "Creating folders"
-    mkdir ~/livecd-${FLAVOUR}
-    cd ~/livecd-${FLAVOUR}
+    mkdir $SCRIPT_PATH/livecd-${FLAVOUR}
+    cd $SCRIPT_PATH/livecd-${FLAVOUR}
     mkdir iso squashfs out
     echo ">> Done"
 fi
@@ -75,7 +84,7 @@ case $FLAVOUR in
         exit
 esac
 
-cd ~/livecd-${FLAVOUR}
+cd $SCRIPT_PATH/livecd-${FLAVOUR}
 
 echo "Checking if iso is present"
 if [[ ! -f ${ISO_NAME} ]]; then
@@ -110,6 +119,7 @@ sudo cp /etc/resolv.conf squashfs/etc/resolv.conf
 
 echo ${JSON} | sudo tee squashfs/tmp/config.json > /dev/null
 
+echo "Listing files to copy"
 i=0
 for FILES in "${FILES_DESCRIPTION[@]}"; do
     echo "Processing $FILES"
@@ -117,6 +127,7 @@ for FILES in "${FILES_DESCRIPTION[@]}"; do
     sudo cp ${FILES_ORIGIN[$i]} ${FILES_TARGET[$i]} 
     ((i++))
 done
+echo ">> Done"
 
 echo "Entering chroot"
 sudo chroot squashfs /usr/bin/bash <<"EOT"
@@ -141,13 +152,14 @@ readarray -t REPOSITORIES_GPG < <(jq -r '.repositories[].gpg_signature' ${CONFIG
 readarray -t REPOSITORIES_URL < <(jq -r '.repositories[].url' ${CONFIG_FILE})
 readarray -t REPOSITORIES_LIST < <(jq -r '.repositories[].list_file' ${CONFIG_FILE})
 
-readarray -t PACKAGES < <(jq -r '.packages[].name' ${CONFIG_FILE})
+readarray -t PACKAGES_REMOTE < <(jq --arg type "remote" -r '.packages[] | select(.type == $type).name' ${CONFIG_FILE})
+readarray -t PACKAGES_LOCAL < <(jq --arg type "local" -r '.packages[] | select(.type == $type).name' ${CONFIG_FILE})
 
-# echo "Installing Zoom"
-# cd /tmp
-# wget -q https://zoom.us/client/latest/zoom_amd64.deb
-# apt-get -qq install -y ./zoom_amd64.deb
-# echo ">> Done"
+echo "Installing Zoom"
+cd /tmp
+wget -q https://zoom.us/client/latest/zoom_amd64.deb
+apt-get -qq install -y ./zoom_amd64.deb
+echo ">> Done"
 
 echo "Adding repositories"
 i=0
@@ -171,17 +183,29 @@ apt-get -qq autoremove
 apt-get -qq autoclean
 echo ">> Done"
 
-echo "Installing packages"
+echo "Installing remote packages"
 i=0
-for PACKAGE in ${PACKAGES[@]}; do
-    echo "Processing $PACKAGE"
-    apt-get -qq install -y $PACKAGE
+for PACKAGE_REMOTE in ${PACKAGES_REMOTE[@]}; do
+    echo "Processing $PACKAGE_REMOTE"
+    apt-get -qq install -y $PACKAGE_REMOTE
     echo ">> Done"
     ((i++))
 done
+echo ">> Done"
+
+echo "Installing local packages"
+i=0
+for PACKAGE_LOCAL in ${PACKAGES_LOCAL[@]}; do
+    echo "Processing $PACKAGE_LOCAL"
+    apt-get -qq install -y /tmp/$PACKAGE_LOCAL
+    echo ">> Done"
+    ((i++))
+done
+echo ">> Done"
 
 echo "Cleaning packages"
 apt-get clean
+echo ">> Done"
 
 # echo "Deleting crash log"
 # rm -r /var/crash/*
@@ -195,28 +219,36 @@ rm /etc/resolv.conf
 # rm /etc/hosts
 exit
 EOT
+echo "Exited chroot"
 
+echo "Cleaning"
 sudo umount ./squashfs/proc 
 sudo umount ./squashfs/sys
 sudo umount ./squashfs/dev/pts
+echo ">> Done"
 
 echo "Generating new manifest"
 sudo chmod a+w iso/casper/filesystem.manifest
 sudo chroot squashfs dpkg-query -W --showformat='${Package}  ${Version}\n' > iso/casper/filesystem.manifest
 sudo chmod go-w iso/casper/filesystem.manifest
+echo ">> Done"
 
 echo "Removing old squashfs"
 sudo rm iso/casper/filesystem.squashfs
+echo ">> Done"
 
 echo "Creating the new squashfs"
 cd squashfs
 sudo mksquashfs . ../iso/casper/filesystem.squashfs #-info
 cd ..
+echo ">> Done"
 
 echo "Generating new ISO"
 cd iso
 sudo bash -c "find . -path ./isolinux -prune -o -type f -not -name md5sum.txt -print0 | xargs -0 md5sum | tee md5sum.txt" > /dev/null
+echo ">> Done"
 
+echo "Generating disk image"
 # sudo genisoimage -o "Custom.iso" -r -J -no-emul-boot -V "USB_LINUX" -boot-load-size 4 -boot-info-table -b isolinux/isolinux.bin -c isolinux/boot.cat ./ 
 sudo xorriso -as mkisofs -r -V "${OUTPUT_VOLUME}" \
              -cache-inodes -J -l \
@@ -227,5 +259,6 @@ sudo xorriso -as mkisofs -r -V "${OUTPUT_VOLUME}" \
              -e boot/grub/efi.img \
                 -no-emul-boot -isohybrid-gpt-basdat \
              -o ../out/${OUTPUT_ISO} ./
+echo ">> Done"
 
-
+echo "Image available in ${OUTPUT_ISO}"

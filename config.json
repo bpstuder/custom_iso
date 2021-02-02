@@ -1,5 +1,5 @@
 {
-    "flavour": "Xubuntu",
+    "flavour": "Ubuntu",
     "output_iso": "CustomBuntu.iso",
     "output_volume" : "CustomBuntu",
     "repositories": [
@@ -18,32 +18,57 @@
     ],
     "packages": [
         {
-            "name": "flameshot"
+            "name": "flameshot",
+            "type": "remote"
         },
         {
-            "name": "filezilla"
+            "name": "filezilla",
+            "type": "remote"
         },
         {
-            "name": "google-chrome-stable"
+            "name": "google-chrome-stable",
+            "type": "remote"
         },
         {
-            "name": "slack-desktop"
+            "name": "slack-desktop",
+            "type": "remote"
         },
         {
-            "name": "whois"
+            "name": "whois",
+            "type": "remote"
         },
         {
-            "name": "uuid"
+            "name": "uuid",
+            "type": "remote"
         },
         {
-            "name": "git"
+            "name": "git",
+            "type": "remote"
+        },
+        {
+            "name": "libpam-pwquality",
+            "type": "remote"
+        },
+        {
+            "name": "libpwquality-tools",
+            "type": "remote"
         }
     ],
     "additional_files": [
         {
-            "origin_path": "~/custom_iso/grub.cfg",
+            "origin_path": "/home/keitaro/Documents/GitHub/custom_iso/grub.cfg",
             "target_path": "iso/boot/grub/",
             "description": "Grub config file"
+        },
+        {
+            "origin_path": "//home/keitaro/Documents/GitHub/custom_iso/unattend.seed",
+            "target_path": "squashfs/opt/custom/",
+            "description": "Unattend install file"
+        },
+        {
+            "origin_path": "/home/keitaro/Documents/GitHub/custom_iso/ubiquity.desktop",
+            "target_path": "squashfs/usr/share/applications",
+            "description": "Custom Setup"
         }
     ]
 }
