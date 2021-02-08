@@ -61,23 +61,23 @@ fi
 case $FLAVOUR in
     ubuntu)
         echo "Ubuntu flavour selected"
-        ISO_NAME="ubuntu-20.04.1-desktop-amd64.iso"
-        ISO_URL="https://releases.ubuntu.com/20.04.1/ubuntu-20.04.1-desktop-amd64.iso"
+        ISO_NAME="ubuntu-20.04.2-desktop-amd64.iso"
+        ISO_URL="https://releases.ubuntu.com/20.04.2/ubuntu-20.04.2-desktop-amd64.iso"
     ;;
     kubuntu)
         echo "Kubuntu flavour selected"
-        ISO_NAME="kubuntu-20.04.1-desktop-amd64.iso"
-        ISO_URL="https://cdimage.ubuntu.com/kubuntu/releases/20.04.1/release/kubuntu-20.04.1-desktop-amd64.iso"
+        ISO_NAME="kubuntu-20.04.2-desktop-amd64.iso"
+        ISO_URL="https://cdimage.ubuntu.com/kubuntu/releases/20.04.2/release/kubuntu-20.04.2-desktop-amd64.iso"
     ;;
     xubuntu)
         echo "Xubuntu flavour selected"
-        ISO_NAME="xubuntu-20.04.1-desktop-amd64.iso"
-        ISO_URL="https://cdimages.ubuntu.com/xubuntu/releases/20.04/release/xubuntu-20.04.1-desktop-amd64.iso"
+        ISO_NAME="xubuntu-20.04.2-desktop-amd64.iso"
+        ISO_URL="https://cdimages.ubuntu.com/xubuntu/releases/20.04/release/xubuntu-20.04.2-desktop-amd64.iso"
     ;;
     lubuntu)
         echo "Lubuntu flavour selected"
-        ISO_NAME="lubuntu-20.04.1-desktop-amd64.iso"
-        ISO_URL="https://cdimage.ubuntu.com/lubuntu/releases/20.04.1/release/lubuntu-20.04.1-desktop-amd64.iso"
+        ISO_NAME="lubuntu-20.04.2-desktop-amd64.iso"
+        ISO_URL="https://cdimage.ubuntu.com/lubuntu/releases/20.04.2/release/lubuntu-20.04.2-desktop-amd64.iso"
     ;;
     *)
         echo "Please select between Ubuntu, Kubuntu, Xubuntu, Lubuntu"
