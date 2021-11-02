@@ -65,23 +65,23 @@ fi
 case $FLAVOUR in
     ubuntu)
         echo "Ubuntu flavour selected"
-        ISO_NAME="ubuntu-20.04.2-desktop-amd64.iso"
-        ISO_URL="https://releases.ubuntu.com/20.04.2/ubuntu-20.04.2-desktop-amd64.iso"
+        ISO_NAME="ubuntu-20.04.3-desktop-amd64.iso"
+        ISO_URL="https://releases.ubuntu.com/20.04.3/ubuntu-20.04.3-desktop-amd64.iso"
     ;;
     kubuntu)
         echo "Kubuntu flavour selected"
-        ISO_NAME="kubuntu-20.04.2-desktop-amd64.iso"
-        ISO_URL="https://cdimage.ubuntu.com/kubuntu/releases/20.04.2/release/kubuntu-20.04.2-desktop-amd64.iso"
+        ISO_NAME="kubuntu-20.04.3-desktop-amd64.iso"
+        ISO_URL="https://cdimage.ubuntu.com/kubuntu/releases/20.04.3/release/kubuntu-20.04.3-desktop-amd64.iso"
     ;;
     xubuntu)
         echo "Xubuntu flavour selected"
-        ISO_NAME="xubuntu-20.04.2-desktop-amd64.iso"
-        ISO_URL="https://cdimages.ubuntu.com/xubuntu/releases/20.04/release/xubuntu-20.04.2-desktop-amd64.iso"
+        ISO_NAME="xubuntu-20.04.3-desktop-amd64.iso"
+        ISO_URL="https://cdimages.ubuntu.com/xubuntu/releases/20.04/release/xubuntu-20.04.3-desktop-amd64.iso"
     ;;
     lubuntu)
         echo "Lubuntu flavour selected"
-        ISO_NAME="lubuntu-20.04.2-desktop-amd64.iso"
-        ISO_URL="https://cdimage.ubuntu.com/lubuntu/releases/20.04.2/release/lubuntu-20.04.2-desktop-amd64.iso"
+        ISO_NAME="lubuntu-20.04.3-desktop-amd64.iso"
+        ISO_URL="https://cdimage.ubuntu.com/lubuntu/releases/20.04.3/release/lubuntu-20.04.3-desktop-amd64.iso"
     ;;
     *)
         echo "Please select between Ubuntu, Kubuntu, Xubuntu, Lubuntu"
@@ -243,7 +243,7 @@ echo ">> Done"
 
 echo "Creating the new squashfs"
 cd squashfs
-sudo mksquashfs . ${SCRIPT_PATH}/iso/casper/filesystem.squashfs #-info
+sudo mksquashfs . ../iso/casper/filesystem.squashfs #-info
 cd ..
 echo ">> Done"
 
@@ -262,7 +262,7 @@ sudo xorriso -as mkisofs -r -V "${OUTPUT_VOLUME}" \
              -eltorito-alt-boot \
              -e boot/grub/efi.img \
                 -no-emul-boot -isohybrid-gpt-basdat \
-             -o ${SCRIPT_PATH}/out/${OUTPUT_ISO} ./
+             -o $SCRIPT_PATH/livecd-${FLAVOUR}/out/${OUTPUT_ISO} ./
 echo ">> Done"
 
 echo "Image available in ${OUTPUT_ISO}"
