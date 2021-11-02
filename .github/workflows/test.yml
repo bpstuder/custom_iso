@@ -26,10 +26,16 @@ jobs:
       - uses: actions/checkout@v2
 
       # Installs some prerequisites
-      #- name: install JQ
-      #  run: sudo apt install -y jq squashfs-tools schroot genisoimage xorriso curl
+      - name: Install Prerequisites 
+        run: sudo apt install -y jq squashfs-tools schroot genisoimage xorriso curl
 
       # Runs a single command using the runners shell
-      #- name: Run the build script
-      #  run: bash build_livecd.sh config.json
+      - name: Run the build script
+        run: bash build_livecd.sh config.json
+      
+      - name: Move generated iso
+        uses: actions/upload-artifact@v2
+        with:
+          name: custombuntu
+          path: out/CustomBuntu.iso
 
