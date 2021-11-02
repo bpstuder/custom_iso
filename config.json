@@ -56,17 +56,17 @@
     ],
     "additional_files": [
         {
-            "origin_path": "/home/keitaro/Documents/GitHub/custom_iso/grub.cfg",
+            "origin_path": "/home/bpstuder/Documents/GitHub/custom_iso/grub.cfg",
             "target_path": "iso/boot/grub/",
             "description": "Grub config file"
         },
         {
-            "origin_path": "//home/keitaro/Documents/GitHub/custom_iso/unattend.seed",
+            "origin_path": "//home/bpstuder/Documents/GitHub/custom_iso/unattend.seed",
             "target_path": "squashfs/opt/custom/",
             "description": "Unattend install file"
         },
         {
-            "origin_path": "/home/keitaro/Documents/GitHub/custom_iso/ubiquity.desktop",
+            "origin_path": "/home/bpstuder/Documents/GitHub/custom_iso/ubiquity.desktop",
             "target_path": "squashfs/usr/share/applications",
             "description": "Custom Setup"
         }

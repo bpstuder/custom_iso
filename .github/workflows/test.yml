@@ -25,6 +25,10 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
+      # Installs some prerequisites
+      - name: install JQ
+        run: apt install -y jq squashfs-tools schroot genisoimage xorriso curl
+
       # Runs a single command using the runners shell
       - name: Run the build script
         run: bash build_livecd.sh config.json

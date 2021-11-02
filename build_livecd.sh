@@ -119,7 +119,7 @@ sudo mount -t devpts none squashfs/dev/pts
 
 echo "Updating resolv.conf for network resolution"
 sudo cp /etc/resolv.conf squashfs/etc/resolv.conf
-# sudo cp /etc/apt/sources.list squashfs/etc/apt/sources.list
+sudo cp /etc/apt/sources.list squashfs/etc/apt/sources.list
 
 echo ${JSON} | sudo tee squashfs/tmp/config.json > /dev/null
 
@@ -243,7 +243,7 @@ echo ">> Done"
 
 echo "Creating the new squashfs"
 cd squashfs
-sudo mksquashfs . ../iso/casper/filesystem.squashfs #-info
+sudo mksquashfs . ${SCRIPT_PATH}/iso/casper/filesystem.squashfs #-info
 cd ..
 echo ">> Done"
 
@@ -262,7 +262,7 @@ sudo xorriso -as mkisofs -r -V "${OUTPUT_VOLUME}" \
              -eltorito-alt-boot \
              -e boot/grub/efi.img \
                 -no-emul-boot -isohybrid-gpt-basdat \
-             -o ../out/${OUTPUT_ISO} ./
+             -o ${SCRIPT_PATH}/out/${OUTPUT_ISO} ./
 echo ">> Done"
 
 echo "Image available in ${OUTPUT_ISO}"
