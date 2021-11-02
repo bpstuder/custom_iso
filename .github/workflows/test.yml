@@ -27,5 +27,5 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run the build script
-        run: bash build_livecd.sh
+        run: bash build_livecd.sh config.json
 
