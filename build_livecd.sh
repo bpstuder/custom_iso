@@ -10,7 +10,8 @@ fi
 echo "Running script from $SCRIPT_PATH"
 
 # FLAVOUR=$(echo ${1} | tr '[:upper:]' '[:lower:]')
-CONFIG_FILE=${1}
+CONFIG_FILE=${SCRIPT_PATH}/${1}
+echo "Using ${CONFIG_FILE}"
 
 echo "Installing prerequisites"
 sudo apt-get -qq install \
@@ -46,6 +47,9 @@ if [[ -f ${CONFIG_FILE} ]]; then
         
     #     ((i++))
     # done
+else
+    echo "Config file not found"
+    exit 1
 fi
 
 # exit
