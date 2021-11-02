@@ -27,7 +27,7 @@ jobs:
 
       # Installs some prerequisites
       - name: install JQ
-        run: apt install -y jq squashfs-tools schroot genisoimage xorriso curl
+        run: sudo apt install -y jq squashfs-tools schroot genisoimage xorriso curl
 
       # Runs a single command using the runners shell
       - name: Run the build script
