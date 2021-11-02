@@ -1,0 +1,74 @@
+{
+    "flavour": "Ubuntu",
+    "output_iso": "CustomBuntu.iso",
+    "output_volume" : "CustomBuntu",
+    "repositories": [
+        {
+            "name": "Slack",
+            "gpg_signature": "https://packagecloud.io/slacktechnologies/slack/gpgkey",
+            "url": "deb https://packagecloud.io/slacktechnologies/slack/debian/ jessie main",
+            "list_file": "slack.list"
+        },
+        {
+            "name": "Chrome",
+            "gpg_signature": "https://dl-ssl.google.com/linux/linux_signing_key.pub",
+            "url": "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main",
+            "list_file": "google-chrome.list"
+        }
+    ],
+    "packages": [
+        {
+            "name": "flameshot",
+            "type": "remote"
+        },
+        {
+            "name": "filezilla",
+            "type": "remote"
+        },
+        {
+            "name": "google-chrome-stable",
+            "type": "remote"
+        },
+        {
+            "name": "slack-desktop",
+            "type": "remote"
+        },
+        {
+            "name": "whois",
+            "type": "remote"
+        },
+        {
+            "name": "uuid",
+            "type": "remote"
+        },
+        {
+            "name": "git",
+            "type": "remote"
+        },
+        {
+            "name": "libpam-pwquality",
+            "type": "remote"
+        },
+        {
+            "name": "libpwquality-tools",
+            "type": "remote"
+        }
+    ],
+    "additional_files": [
+        {
+            "origin_path": "/home/keitaro/Documents/GitHub/custom_iso/grub.cfg",
+            "target_path": "iso/boot/grub/",
+            "description": "Grub config file"
+        },
+        {
+            "origin_path": "//home/keitaro/Documents/GitHub/custom_iso/unattend.seed",
+            "target_path": "squashfs/opt/custom/",
+            "description": "Unattend install file"
+        },
+        {
+            "origin_path": "/home/keitaro/Documents/GitHub/custom_iso/ubiquity.desktop",
+            "target_path": "squashfs/usr/share/applications",
+            "description": "Custom Setup"
+        }
+    ]
+}
