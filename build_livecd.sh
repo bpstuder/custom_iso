@@ -266,6 +266,6 @@ sudo xorriso -as mkisofs -r -V "${OUTPUT_VOLUME}" \
 echo ">> Done"
 
 echo "Changing rights"
-sudo chown $USER:$USER ${OUTPUT_ISO}
+sudo chown $USER:$USER $SCRIPT_PATH/livecd-${FLAVOUR}/out/${OUTPUT_ISO}
 
 echo "Image available in ${OUTPUT_ISO}"
