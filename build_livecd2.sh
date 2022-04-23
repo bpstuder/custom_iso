@@ -66,26 +66,31 @@ fi
 case $FLAVOUR in
     ubuntu)
         echo "Ubuntu flavour selected"
-        ISO_NAME="ubuntu-20.04.3-desktop-amd64.iso"
-        ISO_URL="https://releases.ubuntu.com/20.04.3/ubuntu-20.04.3-desktop-amd64.iso"
+        ISO_NAME="ubuntu-22.04-desktop-amd64.iso"
+        ISO_URL="https://releases.ubuntu.com/jammy/ubuntu-22.04-desktop-amd64.iso"
     ;;
     kubuntu)
         echo "Kubuntu flavour selected"
-        ISO_NAME="kubuntu-20.04.3-desktop-amd64.iso"
-        ISO_URL="https://cdimage.ubuntu.com/kubuntu/releases/20.04.3/release/kubuntu-20.04.3-desktop-amd64.iso"
+        ISO_NAME="kubuntu-22.04-desktop-amd64.iso"
+        ISO_URL="https://cdimage.ubuntu.com/kubuntu/releases/22.04/release/kubuntu-22.04-desktop-amd64.iso"
     ;;
     xubuntu)
         echo "Xubuntu flavour selected"
-        ISO_NAME="xubuntu-20.04.3-desktop-amd64.iso"
-        ISO_URL="https://cdimages.ubuntu.com/xubuntu/releases/20.04/release/xubuntu-20.04.3-desktop-amd64.iso"
+        ISO_NAME="xubuntu-22.04-desktop-amd64.iso"
+        ISO_URL="https://cdimage.ubuntu.com/xubuntu/releases/22.04/release/xubuntu-22.04-desktop-amd64.iso"
     ;;
     lubuntu)
         echo "Lubuntu flavour selected"
-        ISO_NAME="lubuntu-20.04.3-desktop-amd64.iso"
-        ISO_URL="https://cdimage.ubuntu.com/lubuntu/releases/20.04.3/release/lubuntu-20.04.3-desktop-amd64.iso"
+        ISO_NAME="lubuntu-22.04-desktop-amd64.iso"
+        ISO_URL="https://cdimage.ubuntu.com/lubuntu/releases/22.04/release/lubuntu-22.04-desktop-amd64.iso"
     ;;
+    budgie)
+        echo "Budgie flavour selected"
+        ISO_NAME="ubuntu-budgie-22.04-desktop-amd64.iso"
+        ISO_URL="https://cdimage.ubuntu.com/ubuntu-budgie/releases/22.04/release/ubuntu-budgie-22.04-desktop-amd64.iso"
+    ;;   
     *)
-        echo "Please select between Ubuntu, Kubuntu, Xubuntu, Lubuntu"
+        echo "Please select between Ubuntu, Kubuntu, Xubuntu, Lubuntu, Budgie"
         exit
 esac
 
