@@ -1,0 +1,68 @@
+{
+    "flavour": "Ubuntu",
+    "output_iso": "CustomBuntu.iso",
+    "output_volume" : "CustomBuntu",
+    "repositories": [
+        {
+            "name": "Chrome",
+            "gpg_signature": "https://dl-ssl.google.com/linux/linux_signing_key.pub",
+            "url": "deb [arch=amd64 signed-by=/usr/share/keyrings/chrome-archive-keyring.gpg] https://dl.google.com/linux/chrome/deb/ stable main",
+            "list_file": "google-chrome.list"
+        }
+    ],
+    "packages": [
+        {
+            "name": "flameshot",
+            "type": "apt"
+        },
+        {
+            "name": "filezilla",
+            "type": "apt"
+        },
+        {
+            "name": "google-chrome-stable",
+            "type": "apt"
+        },
+        {
+            "name": "slack",
+            "type": "snap"
+        },
+        {
+            "name": "whois",
+            "type": "apt"
+        },
+        {
+            "name": "uuid",
+            "type": "apt"
+        },
+        {
+            "name": "git",
+            "type": "apt"
+        },
+        {
+            "name": "libpam-pwquality",
+            "type": "apt"
+        },
+        {
+            "name": "libpwquality-tools",
+            "type": "apt"
+        }
+    ],
+    "additional_files": [
+        {
+            "origin_path": "/home/bpstuder/Documents/GitHub/custom_iso/grub.cfg",
+            "target_path": "iso/boot/grub/",
+            "description": "Grub config file"
+        },
+        {
+            "origin_path": "//home/bpstuder/Documents/GitHub/custom_iso/unattend.seed",
+            "target_path": "squashfs/opt/custom/",
+            "description": "Unattend install file"
+        },
+        {
+            "origin_path": "/home/bpstuder/Documents/GitHub/custom_iso/ubiquity.desktop",
+            "target_path": "squashfs/usr/share/applications",
+            "description": "Custom Setup"
+        }
+    ]
+}
