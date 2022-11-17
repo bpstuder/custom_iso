@@ -2,4 +2,5 @@ livecd-ubuntu/*
 livecd-kubuntu/*
 livecd-xubuntu/*
 livecd-lubuntu/*
+packages/*
 .DS_Store

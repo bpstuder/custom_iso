@@ -55,7 +55,7 @@
             "description": "Grub config file"
         },
         {
-            "origin_path": "//home/bpstuder/Documents/GitHub/custom_iso/unattend.seed",
+            "origin_path": "/home/bpstuder/Documents/GitHub/custom_iso/unattend.seed",
             "target_path": "squashfs/opt/custom/",
             "description": "Unattend install file"
         },

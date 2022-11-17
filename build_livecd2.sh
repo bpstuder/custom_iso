@@ -67,28 +67,28 @@ fi
 case $FLAVOUR in
 ubuntu)
     echo "Ubuntu flavour selected"
-    ISO_NAME="ubuntu-22.04-desktop-amd64.iso"
-    ISO_URL="https://releases.ubuntu.com/jammy/ubuntu-22.04-desktop-amd64.iso"
+    ISO_NAME="ubuntu-22.04.1-desktop-amd64.iso"
+    ISO_URL="https://releases.ubuntu.com/jammy/ubuntu-22.04.1-desktop-amd64.iso"
     ;;
 kubuntu)
     echo "Kubuntu flavour selected"
-    ISO_NAME="kubuntu-22.04-desktop-amd64.iso"
-    ISO_URL="https://cdimage.ubuntu.com/kubuntu/releases/22.04/release/kubuntu-22.04-desktop-amd64.iso"
+    ISO_NAME="kubuntu-22.04.1-desktop-amd64.iso"
+    ISO_URL="https://cdimage.ubuntu.com/kubuntu/releases/22.04.1/release/kubuntu-22.04.1-desktop-amd64.iso"
     ;;
 xubuntu)
     echo "Xubuntu flavour selected"
-    ISO_NAME="xubuntu-22.04-desktop-amd64.iso"
-    ISO_URL="https://cdimage.ubuntu.com/xubuntu/releases/22.04/release/xubuntu-22.04-desktop-amd64.iso"
+    ISO_NAME="xubuntu-22.04.1-desktop-amd64.iso"
+    ISO_URL="https://cdimage.ubuntu.com/xubuntu/releases/22.04.1/release/xubuntu-22.04.1-desktop-amd64.iso"
     ;;
 lubuntu)
     echo "Lubuntu flavour selected"
-    ISO_NAME="lubuntu-22.04-desktop-amd64.iso"
-    ISO_URL="https://cdimage.ubuntu.com/lubuntu/releases/22.04/release/lubuntu-22.04-desktop-amd64.iso"
+    ISO_NAME="lubuntu-22.04.1-desktop-amd64.iso"
+    ISO_URL="https://cdimage.ubuntu.com/lubuntu/releases/22.04.1/release/lubuntu-22.04.1-desktop-amd64.iso"
     ;;
 budgie)
     echo "Budgie flavour selected"
-    ISO_NAME="ubuntu-budgie-22.04-desktop-amd64.iso"
-    ISO_URL="https://cdimage.ubuntu.com/ubuntu-budgie/releases/22.04/release/ubuntu-budgie-22.04-desktop-amd64.iso"
+    ISO_NAME="ubuntu-budgie-22.04.1-desktop-amd64.iso"
+    ISO_URL="https://cdimage.ubuntu.com/ubuntu-budgie/releases/22.04.1/release/ubuntu-budgie-22.04.1-desktop-amd64.iso"
     ;;
 *)
     echo "Please select between Ubuntu, Kubuntu, Xubuntu, Lubuntu, Budgie"
@@ -279,7 +279,7 @@ cd iso
 sudo bash -c "find . -path ./isolinux -prune -o -type f -not -name md5sum.txt -print0 | xargs -0 md5sum | tee md5sum.txt" >/dev/null
 echo ">> Done"
 
-echo "Generating disk image"
+# echo "Generating disk image"
 # sudo genisoimage -o "Custom.iso" -r -J -no-emul-boot -V "USB_LINUX" -boot-load-size 4 -boot-info-table -b isolinux/isolinux.bin -c isolinux/boot.cat ./
 # sudo xorriso -as mkisofs -r -V "${OUTPUT_VOLUME}" \
 #              -cache-inodes -J -l \
@@ -291,21 +291,51 @@ echo "Generating disk image"
 #                 -no-emul-boot -isohybrid-gpt-basdat \
 #              -o $SCRIPT_PATH/livecd-${FLAVOUR}/out/${OUTPUT_ISO} ./
 
-sudo xorriso -as mkisofs -r \
+echo "Copying boot img"
+dd if=$SCRIPT_PATH/livecd-${FLAVOUR}/${ISO_NAME} bs=1 count=432 of=$SCRIPT_PATH/livecd-${FLAVOUR}/boot/boot_hybrid.img
+
+echo "Copying EFI img"
+dd if=$SCRIPT_PATH/livecd-${FLAVOUR}/${ISO_NAME} bs=512 skip=7129428 count=8496 of=$SCRIPT_PATH/livecd-${FLAVOUR}/boot/efi.img
+
+echo "Generating ISO"
+# sudo xorriso -as mkisofs -r \
+#     -V "${OUTPUT_VOLUME}" \
+#     -o $SCRIPT_PATH/livecd-${FLAVOUR}/out/${OUTPUT_ISO} \
+#     --grub2-mbr $SCRIPT_PATH/livecd-${FLAVOUR}/boot/boot_hybrid.img \
+#     -partition_offset 16 \
+#     --mbr-force-bootable \
+#     -append_partition 2 28732ac11ff8d211ba4b00a0c93ec93b $SCRIPT_PATH/livecd-${FLAVOUR}/boot/efi.img \
+#     -appended_part_as_gpt \
+#     -iso_mbr_part_type a2a0d0ebe5b9334487c068b6b72699c7 \
+#     -c '/boot.catalog' \
+#     -b '/boot/grub/i386-pc/eltorito.img' \
+#     -no-emul-boot -boot-load-size 4 -boot-info-table --grub2-boot-info \
+#     -eltorito-alt-boot \
+#     -e '--interval:appended_partition_2:::' \
+#     -no-emul-boot \
+#     ./
+
+# sudo xorriso -indev $SCRIPT_PATH/livecd-${FLAVOUR}/${ISO_NAME} -report_el_torito as_mkisofs \
+sudo xorriso -report_el_torito as_mkisofs \
     -V "${OUTPUT_VOLUME}" \
-    -o $SCRIPT_PATH/livecd-${FLAVOUR}/out/${OUTPUT_ISO} \
-    --grub2-mbr $SCRIPT_PATH/livecd-${FLAVOUR}/boot/boot_hybrid.img \
+    --grub2-mbr --interval:local_fs:0s-15s:zero_mbrpt,zero_gpt:"$SCRIPT_PATH/livecd-${FLAVOUR}/${ISO_NAME}" \
+    --protective-msdos-label \
+    -partition_cyl_align off \
     -partition_offset 16 \
     --mbr-force-bootable \
-    -append_partition 2 28732ac11ff8d211ba4b00a0c93ec93b $SCRIPT_PATH/livecd-${FLAVOUR}/boot/efi.img \
+    -append_partition 2 28732ac11ff8d211ba4b00a0c93ec93b --interval:local_fs:7129428d-7137923d::"$SCRIPT_PATH/livecd-${FLAVOUR}/${ISO_NAME}" \
     -appended_part_as_gpt \
     -iso_mbr_part_type a2a0d0ebe5b9334487c068b6b72699c7 \
-    -c '/boot.catalog' \
-    -b '/boot/grub/i386-pc/eltorito.img' \
-    -no-emul-boot -boot-load-size 4 -boot-info-table --grub2-boot-info \
-    -eltorito-alt-boot \
-    -e '--interval:appended_partition_2:::' \
+    -c "$SCRIPT_PATH/livecd-${FLAVOUR}/iso/boot.catalog" \
+    -b "$SCRIPT_PATH/livecd-${FLAVOUR}/iso/boot/grub/i386-pc/eltorito.img" \
     -no-emul-boot \
+    -boot-load-size 4 \
+    -boot-info-table \
+    --grub2-boot-info \
+    -eltorito-alt-boot \
+    -e '--interval:appended_partition_2_start_1782357s_size_8496d:all::' \
+    -no-emul-boot \
+    -boot-load-size 8496 \
     ./
 
 echo ">> Done"
